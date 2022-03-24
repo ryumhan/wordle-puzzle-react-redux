@@ -1,38 +1,162 @@
+:root {
+  --header-height: 50px;
+  --tile-text-color: #787c7e;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#header {
+  height: var(--header-height);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 0 50px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#game {
+  width: 100%;
+  background-color: #000000;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+}
+
+.game-container {
+  display: flex;
+  height: calc(100vh - var(--header-height));
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  overflow: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+.tile-box {     
+  width: 350px;
+  height: 420px;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.tile-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 5px;
+}
+
+.tile {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  line-height: 2rem;
+  font-weight: bold;
+  vertical-align: middle;
+  box-sizing: border-box;
+  color: var(--tile-text-color);
+  text-transform: uppercase;
+  user-select: none;
+  background-color: #787c7e;;
+}
+
+.greentile {
+  color: #6aaa64;
+}
+
+.yellowtile {
+  color: #c9b458;
+}
+
+.noramltile {
+  color: #787c7e;
+}
+
+#keyboard {
+  width: 30%;
+  margin: 0 8px;
+  position: absolute;
+  border-radius: 5px;
+  bottom: 30px;
+  display: flex;
+}
+
+:host {
+  display: block;
+}
+
+:host([invalid]){
+  animation-name: Shake;
+  animation-duration: 600ms;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 5px;
+}
+.win {
+  animation-name: Bounce;
+  animation-duration: 1000ms;
+}
+
+@keyframes Bounce {
+  0%, 20% {
+    transform: translateY(0);
   }
-  to {
-    transform: rotate(360deg);
+  40% {
+    transform: translateY(-30px);
   }
+  50% {
+    transform: translateY(5px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+  80% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes Shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
+}
+
+.result-modal {
+  background-color: #000000;
+  position: absolute;
+  /* min-height: 100vh; */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  overflow: hidden;
+  width: 600px;
+  height: 600px;
 }
