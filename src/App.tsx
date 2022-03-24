@@ -3,7 +3,7 @@
  * @date 2022-03-24
  */
 import { ContentsHeader } from "./components/ContentsHeader";
-import { WordleGameBox } from "./components/WordleGameBox";
+import { Controller } from "./containers/Controller";
 
 import "./App.css";
 
@@ -14,7 +14,7 @@ const App: React.FC = () => {
         <ContentsHeader />
       </header>
       <div id="game">
-        <WordleGameBox />
+        <Controller />
       </div>
     </div>
   );

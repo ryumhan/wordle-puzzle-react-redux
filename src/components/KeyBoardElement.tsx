@@ -19,29 +19,24 @@ const display = {
   "{enter}": "↵",
 };
 
-type IKeyBoardUI = {
+interface IKeyBoardProps {
   onKeyClick: Function;
-};
+}
 
-export const KeyBoardUI: React.FC<IKeyBoardUI> = ({ onKeyClick }) => {
+export function KeyBoardUI({ onKeyClick }: IKeyBoardProps) {
   return (
-    <div
-      id="keyboard"
-      onFocusCapture={() => {
-        console.log("changed stryle");
-      }}
-      onFocus={() => {
-        console.log("changed stryle");
-      }}
-    >
+    <div id="keyboard">
       <Keyboard
         display={display}
         // buttonAttributes={}
         layout={layout}
-        keyboardRef={(r) => {
-          onKeyClick(r);
+        onKeyPress={(button: string) => {
+          onKeyClick(button);
+        }}
+        keyboardRef={(r: string) => {
+          console.log("keyboardRef");
         }}
       />
     </div>
   );
-};
+}

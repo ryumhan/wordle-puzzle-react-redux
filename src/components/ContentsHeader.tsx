@@ -7,7 +7,7 @@ import Modal from "react-modal";
 
 // Modal.setAppElement("#root");
 
-export const ContentsHeader = () => {
+export function ContentsHeader({}) {
   return (
     <div id="header">
       <div>Wordle Game</div>
@@ -46,4 +46,4 @@ export const ContentsHeader = () => {
       </Modal>
     </div>
   );
-};
+}
