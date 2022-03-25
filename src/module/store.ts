@@ -7,12 +7,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import listReducer from "./listReducer";
 import countReducers from "./counterReducer";
 import answerReducer from "./answerReducer";
+import timeOnReducer from "./timeOnReducer";
 
 export const store = configureStore({
   reducer: {
     counter: countReducers,
     answer: answerReducer,
     elementlist: listReducer,
+    timeOn: timeOnReducer,
   },
 });
 

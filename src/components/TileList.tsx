@@ -3,7 +3,6 @@
  * @date 2022-03-24
  */
 
-import React from "react";
 import { Raw, ITileElment } from "./Raw";
 
 interface ITileListProps {

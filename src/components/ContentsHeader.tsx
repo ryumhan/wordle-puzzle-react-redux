@@ -6,49 +6,71 @@
 import Modal from "react-modal";
 import { Timer } from "./Timer";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../module/store";
+import { useState, useEffect } from "react";
+
+import { onReset } from "../module/timeOnReducer";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 export function ContentsHeader({}) {
+  const dispatch = useDispatch();
+
+  const { timeOn } = useSelector((state: RootState) => ({
+    timeOn: state.timeOn.onTime,
+  }));
+
   const { answer } = useSelector((state: RootState) => ({
     answer: state.answer.value,
   }));
 
+  const [show, setShow] = useState(false);
+  const [resetSq, setReset] = useState(0);
+
+  useEffect(() => {
+    console.log("Time To Open Modal and Reset");
+    if (timeOn > 0) {
+      openModal();
+    }
+  }, [timeOn]);
+
+  const closeModal = () => {
+    setShow(false);
+    setReset(timeOn);
+
+    dispatch(onReset());
+  };
+
+  const openModal = () => {
+    setShow(true);
+  };
+
   return (
     <div id="header">
-      <Timer />
+      <Timer onTimeSeq={resetSq} />
       <div>Wordle Game</div>
-      <div>
-        Answer:<span> {answer}</span>
-      </div>
+      <div>{answer}</div>
       <Modal
-        isOpen={false}
-        style={{
-          overlay: {
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(255, 255, 255, 0.75)",
-          },
-          content: {
-            position: "absolute",
-            top: "40px",
-            left: "40px",
-            right: "40px",
-            bottom: "40px",
-            border: "1px solid #ccc",
-            background: "#fff",
-            overflow: "auto",
-            WebkitOverflowScrolling: "touch",
-            borderRadius: "4px",
-            outline: "none",
-            padding: "20px",
-          },
-        }}
+        isOpen={show}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
       >
-        This is Modal content
+        <div>
+          Result : <div>{answer}</div>
+          <button onClick={closeModal}>X</button>
+        </div>
+        <form></form>
       </Modal>
     </div>
   );

@@ -4,21 +4,34 @@
  */
 import { KeyBoardUI } from "../components/KeyBoardElement";
 import { listState } from "../module/listReducer";
+import { ITileElment } from "../components/Raw";
 
 interface IKeyBoardContainerProps {
-  inputlist: Array<string>;
+  tileMap: Array<Array<ITileElment>>; // 0 : gray, 1 : yellow, 2 : green
   onSubmit: Function;
   addKey: Function;
   deleteKey: Function;
 }
 
 export function KeyBoardContainer({
-  inputlist,
+  tileMap,
   onSubmit,
   addKey,
   deleteKey,
 }: IKeyBoardContainerProps) {
-  // console.debug("KeyBoardContainer render");
+  let greens: Array<string> = [];
+  let yellow: Array<string> = [];
+  let grays: Array<string> = [];
+
+  tileMap.forEach((row: Array<ITileElment>) => {
+    row.forEach((element: ITileElment) => {
+      element.type == 0
+        ? grays.push(element.ch)
+        : element.type == 1
+        ? yellow.push(element.ch)
+        : greens.push(element.ch);
+    });
+  });
 
   /**
    * dispatch the inpur ref value to redux store.
@@ -37,5 +50,12 @@ export function KeyBoardContainer({
     }
   };
 
-  return <KeyBoardUI onKeyClick={onKeyClick} />;
+  return (
+    <KeyBoardUI
+      onKeyClick={onKeyClick}
+      greens={greens.join(" ")}
+      yellows={yellow.join(" ")}
+      grays={grays.join(" ")}
+    />
+  );
 }

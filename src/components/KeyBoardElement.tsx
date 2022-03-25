@@ -21,20 +21,66 @@ const display = {
 
 interface IKeyBoardProps {
   onKeyClick: Function;
+  greens: string;
+  yellows: string;
+  grays: string;
 }
 
-export function KeyBoardUI({ onKeyClick }: IKeyBoardProps) {
+interface ButtonColor {
+  attribute: string;
+  value: string;
+  buttons: string;
+}
+
+export function KeyBoardUI({
+  onKeyClick,
+  greens,
+  yellows,
+  grays,
+}: IKeyBoardProps) {
+  const makeBtnAtrrbute = () => {
+    let bttnAtr: Array<ButtonColor> = [];
+    if (greens.length) {
+      const gBtn: ButtonColor = {
+        attribute: "style",
+        value: "background-color : #6aaa64;",
+        buttons: greens.toUpperCase(),
+      };
+
+      bttnAtr.push(gBtn);
+    }
+
+    if (yellows.length) {
+      const yBtn: ButtonColor = {
+        attribute: "style",
+        value: "background-color : #c9b458;",
+        buttons: yellows.toUpperCase(),
+      };
+
+      bttnAtr.push(yBtn);
+    }
+
+    if (grays.length) {
+      const bBtn: ButtonColor = {
+        attribute: "style",
+        value: "background-color : #787c7e;",
+        buttons: grays.toUpperCase(),
+      };
+
+      bttnAtr.push(bBtn);
+    }
+
+    return bttnAtr;
+  };
+
   return (
     <div id="keyboard">
       <Keyboard
+        buttonAttributes={makeBtnAtrrbute()}
         display={display}
-        // buttonAttributes={}
         layout={layout}
         onKeyPress={(button: string) => {
           onKeyClick(button);
-        }}
-        keyboardRef={(r: string) => {
-          console.log("keyboardRef");
         }}
       />
     </div>

@@ -3,8 +3,7 @@
  * @date 2022-03-25
  */
 
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React from "react";
 
 interface ITileProps {
   tileType: number; // 0 : gray, 1 : yellow, 2 : green
@@ -12,10 +11,6 @@ interface ITileProps {
 }
 
 export function Tile({ input, tileType }: ITileProps) {
-  useEffect(() => {
-    console.log("Tile rerender", input);
-  });
-
   const Tile =
     tileType == 0 ? (
       <div className="noramltile">{input}</div>
@@ -28,4 +23,4 @@ export function Tile({ input, tileType }: ITileProps) {
   return Tile;
 }
 
-export default React.memo(Tile);
+// export default React.memo(Tile);

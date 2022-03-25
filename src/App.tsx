@@ -14,7 +14,7 @@ const App: React.FC = () => {
         <ContentsHeader />
       </header>
       <div id="game">
-        <GameBox uri={"./module/words.json"} timeset={false} />
+        <GameBox />
       </div>
     </div>
   );

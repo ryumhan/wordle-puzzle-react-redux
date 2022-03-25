@@ -3,18 +3,23 @@
  * @date 2022-03-24
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../module/store";
 
 import { KeyBoardContainer } from "../containers/KeyBoardContainer";
 import { TileList } from "../components/TileList";
-
-import { addKey, deleteKey, UpdateTile } from "../module/listReducer";
-import { increament } from "../module/counterReducer";
-
 import { ITileElment } from "../components/Raw";
+import { increament, initCounter } from "../module/counterReducer";
+
+import {
+  addKey,
+  clearCurrentRow,
+  deleteKey,
+  initialize,
+  updateTile,
+} from "../module/listReducer";
 
 interface IControllerProps {
   answer: string;
@@ -26,16 +31,23 @@ export function Controller({ answer, wordList }: IControllerProps) {
 
   const { list, tilelist, counterState } = useSelector((state: RootState) => ({
     list: state.elementlist.list,
-    tilelist: state.elementlist.titeList,
+    tilelist: state.elementlist.tileList,
     counterState: state.counter,
   }));
 
+  useEffect(() => {
+    // if answer is changed due to timeout, then reset all the data.
+    dispatch(initCounter());
+    dispatch(initialize());
+    console.log("initialized all the state");
+  }, [answer]);
+
   const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       return onSubmitControl();
     }
 
-    if (e.key == "Backspace") {
+    if (e.key === "Backspace") {
       return deleteKeyControl();
     }
 
@@ -55,11 +67,12 @@ export function Controller({ answer, wordList }: IControllerProps) {
 
   const addKeyControl = (value: string) => {
     const word = getCurrentWord();
-    if (word.length == 5) {
+    //complete word
+    if (word.length === 5) {
       return;
     }
-    //if limitation.
-    if (list.length == 30) {
+    //maximum.
+    if (list.length === 30) {
       return;
     }
 
@@ -91,18 +104,20 @@ export function Controller({ answer, wordList }: IControllerProps) {
 
   const onSubmitControl = () => {
     const word = getCurrentWord();
-    if (word.length != 5) {
+    if (word.length !== 5) {
       alert("Not complete word");
       return;
     }
 
     if (!wordList.includes(word)) {
       alert("Not Valid word in the list");
+      dispatch(clearCurrentRow());
       return;
     }
-
     //Update Tile list
-    dispatch(UpdateTile(compareAnswerWithWord(word)));
+    const tileTypeList = compareAnswerWithWord(word);
+    //condition :: all value is 2,
+    dispatch(updateTile(tileTypeList));
     //chage the current raw
     dispatch(increament());
   };
@@ -127,9 +142,9 @@ export function Controller({ answer, wordList }: IControllerProps) {
     for (let i = 0; i < 5; i++) {
       const idx = answer.indexOf(word[i]);
       // type matching
-      if (answer[i] == word[i]) {
+      if (answer[i] === word[i]) {
         tileTypeArray.push(2);
-      } else if (idx != -1) {
+      } else if (idx !== -1) {
         tileTypeArray.push(1);
       } else {
         tileTypeArray.push(0);
@@ -164,7 +179,7 @@ export function Controller({ answer, wordList }: IControllerProps) {
     >
       <TileList tileMap={makeInputMap()} currentRow={counterState.raw} />
       <KeyBoardContainer
-        inputlist={list}
+        tileMap={makeInputMap()}
         onSubmit={onSubmitControl}
         addKey={addKeyControl}
         deleteKey={deleteKeyControl}

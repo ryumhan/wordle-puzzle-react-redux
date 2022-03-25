@@ -3,7 +3,6 @@
  * @date 2022-03-25
  */
 
-import React, { useEffect, useState } from "react";
 import { Tile } from "./Tile";
 
 export interface ITileElment {
@@ -16,10 +15,6 @@ interface IRawProps {
 }
 
 export function Raw({ tileElement }: IRawProps) {
-  useEffect(() => {
-    console.log("inputList rerender", tileElement);
-  });
-
   return (
     <div className="tile-list">
       {tileElement.map((element: ITileElment, index: number) => {
