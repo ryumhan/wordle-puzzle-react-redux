@@ -69,19 +69,57 @@ export function ContentsHeader({}) {
     return time.toDateString() + "-" + time.toTimeString();
   };
 
+  const makeShareInput = () => {
+    let txt: string = "";
+    //title, date
+    txt = txt.concat("Wordle  날짜: ", getCurrentTime(), "\n");
+    //try no.
+    txt = txt.concat("시도 횟수 : ", (raw + 1).toString(), "/6", "\n");
+    //tile input list.
+    txt = txt.concat("word tile list ", "\n");
+    tryList.forEach((ch: string, index: number) => {
+      txt = txt.concat(ch);
+      if (index % 5 == 4) {
+        txt = txt.concat("\n");
+      }
+    });
+
+    return txt;
+  };
+
+  /**
+   * Copy to clipboard from result data.
+   */
+  const shareTo = () => {
+    const textarea = document.createElement("textarea");
+    textarea.value = makeShareInput();
+
+    textarea.style.top = "0";
+    textarea.style.left = "0";
+    textarea.style.position = "fixed";
+
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+
+    alert("copied text");
+  };
+
   return (
     <div id="header">
       <Timer onTimeSeq={resetSq} />
       <div>Wordle Game</div>
-      <div>{answer}</div>
+      <div></div>
       <Modal isOpen={show} style={customStyles} ariaHideApp={false}>
         <div>Answer : {answer}</div>
         <br />
         <form>
-          <div>Wordle 날짜 : {getCurrentTime()}</div>
-          <p>시도 횟수 : {raw + 1}/6</p>
-          <div>{tryList.toString()}</div>
-          <button onClick={closeModal}>Share</button>
+          <h3>{makeShareInput()}</h3>
+          <br />
+          <br />
+          <button onClick={shareTo}>Share</button>
           <button onClick={closeModal}>Close</button>
         </form>
       </Modal>
