@@ -3,23 +3,23 @@
  * @date 2022-03-24
  */
 
+import React from "react";
 import { Raw } from "./Raw";
 
 interface ITileListProps {
-  input: string;
-  position: { x: number; y: number };
+  inputRawCol: Array<Array<string>>;
+  row: number;
   submit: boolean;
 }
 
-export function TileList({ input, position, submit }: ITileListProps) {
+export function TileList({ inputRawCol, row, submit }: ITileListProps) {
   return (
     <div className="tile-box">
-      <Raw keyList={[""]} tileType={[0, 0, 0, 0, 0]} />
-      <Raw keyList={[""]} tileType={[0, 0, 0, 0, 0]} />
-      <Raw keyList={[""]} tileType={[0, 0, 0, 0, 0]} />
-      <Raw keyList={[""]} tileType={[0, 0, 0, 0, 0]} />
-      <Raw keyList={[""]} tileType={[0, 0, 0, 0, 0]} />
-      <Raw keyList={[""]} tileType={[0, 0, 0, 0, 0]} />
+      {inputRawCol.map((raw: Array<string>, index: number) => {
+        return <Raw inputList={raw} tileType={[0, 0, 0, 0, 0]} key={index} />;
+      })}
     </div>
   );
 }
+
+export default React.memo(TileList);

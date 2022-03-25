@@ -1,20 +1,26 @@
-import Modal from "react-modal";
-
 /**
  * @author ryumhan
  * @date 2022-03-24
  */
 
-// Modal.setAppElement("#root");
+import Modal from "react-modal";
+import { Timer } from "./Timer";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../module/store";
 
 export function ContentsHeader({}) {
+  const { answer } = useSelector((state: RootState) => ({
+    answer: state.answer.value,
+  }));
+
   return (
     <div id="header">
+      <Timer />
       <div>Wordle Game</div>
       <div>
-        Answer:<span> hidden</span>
+        Answer:<span> {answer}</span>
       </div>
-      <div> Timer : 10:00</div>
       <Modal
         isOpen={false}
         style={{

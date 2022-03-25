@@ -7,11 +7,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
 export interface keyState {
+  value: string;
   list: Array<string>;
 }
 
 // Define the initial state using that type
 const initialState = {
+  value: "",
   list: [],
 } as keyState;
 
@@ -21,7 +23,8 @@ export const keyReducer = createSlice({
   initialState,
   reducers: {
     addKey: (state: keyState, action: PayloadAction<string>) => {
-      state.list = state.list.concat(action.payload);
+      state.value = action.payload;
+      state.list.push(action.payload);
     },
     deleteKey: (state: keyState) => {
       state.list.pop();

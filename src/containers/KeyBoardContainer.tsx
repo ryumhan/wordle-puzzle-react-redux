@@ -3,17 +3,22 @@
  * @date 2022-03-24
  */
 import { KeyBoardUI } from "../components/KeyBoardElement";
-import { useDispatch } from "react-redux";
 import { keyState } from "../module/keyReducer";
-import { addKey, deleteKey } from "../module/keyReducer";
 
 interface IKeyBoardContainerProps {
-  inputState: keyState;
+  inputlist: Array<string>;
+  onSubmit: Function;
+  addKey: Function;
+  deleteKey: Function;
 }
 
-export function KeyBoardContainer({ inputState }: IKeyBoardContainerProps) {
+export function KeyBoardContainer({
+  inputlist,
+  onSubmit,
+  addKey,
+  deleteKey,
+}: IKeyBoardContainerProps) {
   // console.debug("KeyBoardContainer render");
-  const dispatch = useDispatch();
 
   /**
    * dispatch the inpur ref value to redux store.
@@ -22,16 +27,14 @@ export function KeyBoardContainer({ inputState }: IKeyBoardContainerProps) {
   const onKeyClick = (value: string) => {
     switch (value) {
       case "{bksp}":
-        return dispatch(deleteKey());
+        deleteKey();
+        break;
       case "{enter}":
+        onSubmit();
         break;
       default:
-        if (inputState.list.length) {
-        }
-        dispatch(addKey(value));
+        addKey(value);
     }
-
-    console.log("prev", inputState.list);
   };
 
   return <KeyBoardUI onKeyClick={onKeyClick} />;

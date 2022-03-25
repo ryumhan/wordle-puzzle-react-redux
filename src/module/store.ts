@@ -6,9 +6,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import keyReducer from "./keyReducer";
 import countReducers from "./counterReducer";
+import answerReducer from "./answerReducer";
 
 export const store = configureStore({
-  reducer: { key: keyReducer, counter: countReducers },
+  reducer: { key: keyReducer, counter: countReducers, answer: answerReducer },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

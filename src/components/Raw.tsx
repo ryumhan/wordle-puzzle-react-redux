@@ -3,21 +3,28 @@
  * @date 2022-03-25
  */
 
+import React, { useEffect, useState } from "react";
 import { Tile } from "./Tile";
 
 interface IRawProps {
   tileType: Array<number>; // 0 : gray, 1 : yellow, 2 : green
-  keyList: Array<string>;
+  inputList: Array<string>;
 }
 
-export function Raw({ keyList, tileType }: IRawProps) {
+export function Raw({ inputList, tileType }: IRawProps) {
+  useEffect(() => {
+    console.log("inputList rerender", inputList);
+  });
+
   return (
     <div className="tile-list">
-      <Tile input="A" tileType={0} />
-      <Tile input="A" tileType={1} />
-      <Tile input="b" tileType={2} />
-      <Tile input="d" tileType={0} />
-      <Tile input="f" tileType={0} />
+      {inputList.map((value: string, index: number) => {
+        return <Tile input={value} tileType={tileType[index]} key={index} />;
+      })}
     </div>
   );
 }
+
+export default React.memo(Raw, (prev: IRawProps, next: IRawProps) => {
+  return JSON.stringify(prev.inputList) != JSON.stringify(next.inputList);
+});
