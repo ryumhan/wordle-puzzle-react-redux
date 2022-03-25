@@ -19,6 +19,7 @@ export function KeyBoardContainer({
   addKey,
   deleteKey,
 }: IKeyBoardContainerProps) {
+  //make button type for marking
   let greens: Array<string> = [];
   let yellow: Array<string> = [];
   let grays: Array<string> = [];

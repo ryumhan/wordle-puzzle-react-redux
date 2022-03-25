@@ -11,7 +11,6 @@ import { RootState } from "../module/store";
 import { useState, useEffect } from "react";
 
 import { onReset } from "../module/timeOnReducer";
-import { ITileElment } from "./Raw";
 
 const customStyles = {
   content: {
@@ -52,7 +51,7 @@ export function ContentsHeader({}) {
   }));
 
   useEffect(() => {
-    console.log("Time To Open Modal and Reset");
+    console.log("Time To Reset");
     if (timeOn > 0) {
       openModal();
     }

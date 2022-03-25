@@ -123,7 +123,7 @@ export function Controller({ answer, wordList }: IControllerProps) {
     if (
       //condition :: all value is 2 or maximum submision condition.
       (!tileTypeList.includes(1) && !tileTypeList.includes(0)) ||
-      counterState.raw == 5
+      counterState.raw === 5
     ) {
       return dispatch(onTime());
     }
