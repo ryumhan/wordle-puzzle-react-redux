@@ -14,12 +14,7 @@ const App: React.FC = () => {
         <ContentsHeader />
       </header>
       <div id="game">
-        <GameBox
-          uri={
-            "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9f26a372- 74a2-47fd-8b3b-8ea745f7cfeb/words.json"
-          }
-          timeset={false}
-        />
+        <GameBox uri={"./module/words.json"} timeset={false} />
       </div>
     </div>
   );

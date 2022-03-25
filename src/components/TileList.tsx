@@ -4,22 +4,25 @@
  */
 
 import React from "react";
-import { Raw } from "./Raw";
+import { Raw, ITileElment } from "./Raw";
 
 interface ITileListProps {
-  inputRawCol: Array<Array<string>>;
-  row: number;
-  submit: boolean;
+  tileMap: Array<Array<ITileElment>>; // 0 : gray, 1 : yellow, 2 : green
+  currentRow: number;
 }
 
-export function TileList({ inputRawCol, row, submit }: ITileListProps) {
+export function TileList({ tileMap, currentRow }: ITileListProps) {
   return (
     <div className="tile-box">
-      {inputRawCol.map((raw: Array<string>, index: number) => {
-        return <Raw inputList={raw} tileType={[0, 0, 0, 0, 0]} key={index} />;
+      {tileMap.map((row: Array<ITileElment>, index: number) => {
+        if (currentRow == index) {
+          return <Raw tileElement={row} key={index} />;
+        }
+
+        return <Raw tileElement={row} key={index} />;
       })}
     </div>
   );
 }
 
-export default React.memo(TileList);
+// export default React.memo(TileList);

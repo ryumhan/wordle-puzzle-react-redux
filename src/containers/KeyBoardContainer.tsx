@@ -3,7 +3,7 @@
  * @date 2022-03-24
  */
 import { KeyBoardUI } from "../components/KeyBoardElement";
-import { keyState } from "../module/keyReducer";
+import { listState } from "../module/listReducer";
 
 interface IKeyBoardContainerProps {
   inputlist: Array<string>;

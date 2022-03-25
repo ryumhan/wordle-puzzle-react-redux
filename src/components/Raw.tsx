@@ -6,25 +6,25 @@
 import React, { useEffect, useState } from "react";
 import { Tile } from "./Tile";
 
-interface IRawProps {
-  tileType: Array<number>; // 0 : gray, 1 : yellow, 2 : green
-  inputList: Array<string>;
+export interface ITileElment {
+  ch: string;
+  type: number; // 0 : gray, 1 : yellow, 2 : green
 }
 
-export function Raw({ inputList, tileType }: IRawProps) {
+interface IRawProps {
+  tileElement: Array<ITileElment>; // 0 : gray, 1 : yellow, 2 : green
+}
+
+export function Raw({ tileElement }: IRawProps) {
   useEffect(() => {
-    console.log("inputList rerender", inputList);
+    console.log("inputList rerender", tileElement);
   });
 
   return (
     <div className="tile-list">
-      {inputList.map((value: string, index: number) => {
-        return <Tile input={value} tileType={tileType[index]} key={index} />;
+      {tileElement.map((element: ITileElment, index: number) => {
+        return <Tile input={element.ch} tileType={element.type} key={index} />;
       })}
     </div>
   );
 }
-
-export default React.memo(Raw, (prev: IRawProps, next: IRawProps) => {
-  return JSON.stringify(prev.inputList) != JSON.stringify(next.inputList);
-});

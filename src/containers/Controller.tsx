@@ -3,7 +3,7 @@
  * @date 2022-03-24
  */
 
-import React, { useState } from "react";
+import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../module/store";
@@ -11,8 +11,10 @@ import { RootState } from "../module/store";
 import { KeyBoardContainer } from "../containers/KeyBoardContainer";
 import { TileList } from "../components/TileList";
 
-import { addKey, deleteKey } from "../module/keyReducer";
+import { addKey, deleteKey, UpdateTile } from "../module/listReducer";
 import { increament } from "../module/counterReducer";
+
+import { ITileElment } from "../components/Raw";
 
 interface IControllerProps {
   answer: string;
@@ -22,8 +24,9 @@ interface IControllerProps {
 export function Controller({ answer, wordList }: IControllerProps) {
   const dispatch = useDispatch();
 
-  const { keyState, counterState } = useSelector((state: RootState) => ({
-    keyState: state.key,
+  const { list, tilelist, counterState } = useSelector((state: RootState) => ({
+    list: state.elementlist.list,
+    tilelist: state.elementlist.titeList,
     counterState: state.counter,
   }));
 
@@ -37,6 +40,16 @@ export function Controller({ answer, wordList }: IControllerProps) {
     }
 
     //TODO validation
+    const regex = new RegExp("^[aA-zZ]{1,1}$");
+    if (!regex.test(e.key)) {
+      const koCh = new RegExp("^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]{1,1}$");
+      if (koCh.test(e.key)) {
+        alert("Only English Available, please convert the language");
+      }
+
+      return;
+    }
+
     addKeyControl(e.key);
   };
 
@@ -63,7 +76,7 @@ export function Controller({ answer, wordList }: IControllerProps) {
     //extract word at current row
     const raw = counterState.raw;
     for (let i = raw * 5; i < 5 * (raw + 1); i++) {
-      const ch = keyState.list[i];
+      const ch = list[i];
       if (ch) {
         word = word.concat(ch.toLowerCase());
       }
@@ -84,35 +97,57 @@ export function Controller({ answer, wordList }: IControllerProps) {
       return;
     }
 
+    //Update Tile list
+    dispatch(UpdateTile(compareAnswerWithWord(word)));
     //chage the current raw
     dispatch(increament());
   };
 
-  const getinitArray = () => {
-    const tileList: Array<Array<string>> = new Array(6);
+  const getinitArrayITileElment = () => {
+    const tileList: Array<Array<ITileElment>> = new Array(6);
     //initialize Element
     for (let row = 0; row < 6; row++) {
       tileList[row] = new Array(5);
-      tileList[row].fill("");
+
+      for (let col = 0; col < 5; col++) {
+        tileList[row][col] = { ch: "", type: 0 };
+      }
     }
 
     return tileList;
   };
 
-  const makeInputRawList = () => {
-    const tileList = getinitArray();
+  const compareAnswerWithWord = (word: string) => {
+    let tileTypeArray: Array<number> = [];
 
-    const list = keyState.list;
+    for (let i = 0; i < 5; i++) {
+      const idx = answer.indexOf(word[i]);
+      // type matching
+      if (answer[i] == word[i]) {
+        tileTypeArray.push(2);
+      } else if (idx != -1) {
+        tileTypeArray.push(1);
+      } else {
+        tileTypeArray.push(0);
+      }
+    }
+
+    return tileTypeArray;
+  };
+
+  const makeInputMap = () => {
+    const tileMap = getinitArrayITileElment();
+
     list.forEach((element: string, index: number) => {
       const q = index;
       const col = index % 5;
       const currentRaw = Math.floor(q / 5);
 
-      tileList[currentRaw][col] = element;
+      tileMap[currentRaw][col].ch = element;
+      tileMap[currentRaw][col].type = tilelist[index] ? tilelist[index] : 0;
     });
 
-    console.debug("makeInputRawList", tileList);
-    return tileList;
+    return tileMap;
   };
 
   return (
@@ -123,13 +158,9 @@ export function Controller({ answer, wordList }: IControllerProps) {
         onKeyDown(e);
       }}
     >
-      <TileList
-        inputRawCol={makeInputRawList()}
-        submit={false}
-        row={counterState.raw}
-      />
+      <TileList tileMap={makeInputMap()} currentRow={counterState.raw} />
       <KeyBoardContainer
-        inputlist={keyState.list}
+        inputlist={list}
         onSubmit={onSubmitControl}
         addKey={addKeyControl}
         deleteKey={deleteKeyControl}
