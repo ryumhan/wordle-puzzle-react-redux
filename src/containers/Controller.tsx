@@ -12,6 +12,7 @@ import { KeyBoardContainer } from "../containers/KeyBoardContainer";
 import { TileList } from "../components/TileList";
 import { ITileElment } from "../components/Raw";
 import { increament, initCounter } from "../module/counterReducer";
+import { onTime } from "../module/timeOnReducer";
 
 import {
   addKey,
@@ -51,7 +52,7 @@ export function Controller({ answer, wordList }: IControllerProps) {
       return deleteKeyControl();
     }
 
-    //TODO validation
+    //validation
     const regex = new RegExp("^[aA-zZ]{1,1}$");
     if (!regex.test(e.key)) {
       const koCh = new RegExp("^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]{1,1}$");
@@ -114,10 +115,18 @@ export function Controller({ answer, wordList }: IControllerProps) {
       dispatch(clearCurrentRow());
       return;
     }
+
     //Update Tile list
     const tileTypeList = compareAnswerWithWord(word);
-    //condition :: all value is 2,
     dispatch(updateTile(tileTypeList));
+
+    if (
+      //condition :: all value is 2 or maximum submision condition.
+      (!tileTypeList.includes(1) && !tileTypeList.includes(0)) ||
+      counterState.raw == 5
+    ) {
+      return dispatch(onTime());
+    }
     //chage the current raw
     dispatch(increament());
   };

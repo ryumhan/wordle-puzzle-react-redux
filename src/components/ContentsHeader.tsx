@@ -11,6 +11,7 @@ import { RootState } from "../module/store";
 import { useState, useEffect } from "react";
 
 import { onReset } from "../module/timeOnReducer";
+import { ITileElment } from "./Raw";
 
 const customStyles = {
   content: {
@@ -26,6 +27,9 @@ const customStyles = {
 export function ContentsHeader({}) {
   const dispatch = useDispatch();
 
+  const [show, setShow] = useState(false);
+  const [resetSq, setReset] = useState(0);
+
   const { timeOn } = useSelector((state: RootState) => ({
     timeOn: state.timeOn.onTime,
   }));
@@ -34,8 +38,13 @@ export function ContentsHeader({}) {
     answer: state.answer.value,
   }));
 
-  const [show, setShow] = useState(false);
-  const [resetSq, setReset] = useState(0);
+  const { raw } = useSelector((state: RootState) => ({
+    raw: state.counter.raw,
+  }));
+
+  const { tryList } = useSelector((state: RootState) => ({
+    tryList: state.elementlist.list,
+  }));
 
   useEffect(() => {
     console.log("Time To Open Modal and Reset");
@@ -55,22 +64,26 @@ export function ContentsHeader({}) {
     setShow(true);
   };
 
+  const getCurrentTime = () => {
+    const time = new Date();
+    return time.toDateString() + "-" + time.toTimeString();
+  };
+
   return (
     <div id="header">
       <Timer onTimeSeq={resetSq} />
       <div>Wordle Game</div>
       <div>{answer}</div>
-      <Modal
-        isOpen={show}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <div>
-          Result : <div>{answer}</div>
-          <button onClick={closeModal}>X</button>
-        </div>
-        <form></form>
+      <Modal isOpen={show} style={customStyles} ariaHideApp={false}>
+        <div>Answer : {answer}</div>
+        <br />
+        <form>
+          <div>Wordle 날짜 : {getCurrentTime()}</div>
+          <p>시도 횟수 : {raw + 1}/6</p>
+          <div>{tryList.toString()}</div>
+          <button onClick={closeModal}>Share</button>
+          <button onClick={closeModal}>Close</button>
+        </form>
       </Modal>
     </div>
   );
