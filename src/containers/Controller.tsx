@@ -58,6 +58,10 @@ export function Controller({ answer, wordList }: IControllerProps) {
     if (word.length == 5) {
       return;
     }
+    //if limitation.
+    if (list.length == 30) {
+      return;
+    }
 
     dispatch(addKey(value));
   };
