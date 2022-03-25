@@ -30,6 +30,11 @@ export function ContentsHeader({}) {
   const [show, setShow] = useState(false);
   const [resetSq, setReset] = useState(0);
 
+  /**
+   * Get necessary state from redux store.
+   * Using timeOn, this Component will be triggered and then, by Dispatching resetSq,
+   * GameBox will be re-rendered
+   */
   const { timeOn } = useSelector((state: RootState) => ({
     timeOn: state.timeOn.onTime,
   }));

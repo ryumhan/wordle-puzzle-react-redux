@@ -14,13 +14,13 @@ interface ITimerProps {
 export function Timer({ onTimeSeq }: ITimerProps) {
   const dispatch = useDispatch();
 
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(30);
+  const [minutes, setMinutes] = useState(10);
+  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     if (onTimeSeq) {
-      setMinutes(0);
-      setSeconds(30);
+      setMinutes(10);
+      setSeconds(0);
     }
   }, [onTimeSeq]);
 
