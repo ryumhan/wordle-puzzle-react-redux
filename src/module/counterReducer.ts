@@ -7,12 +7,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
 export interface counterState {
-  value: number;
+  raw: number;
 }
 
 // Define the initial state using that type
 const initialState = {
-  value: 1,
+  raw: 0,
 } as counterState;
 
 export const counterReducer = createSlice({
@@ -20,15 +20,15 @@ export const counterReducer = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    Increament: (state: counterState) => {
-      ++state.value;
+    increament: (state: counterState) => {
+      state.raw = ++state.raw;
     },
     initCounter: (state: counterState) => {
-      state.value = 1;
+      state.raw = 0;
     },
   },
 });
 
-export const { Increament, initCounter } = counterReducer.actions;
+export const { increament, initCounter } = counterReducer.actions;
 
 export default counterReducer.reducer;

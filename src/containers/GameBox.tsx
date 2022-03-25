@@ -8918,7 +8918,6 @@ export function GameBox({ uri, timeset }: IGameBoxProps) {
   };
 
   const [dataList, setData] = useState([""]);
-
   const [answer, setAnswer] = useState("");
 
   const getRandomWord = () => {

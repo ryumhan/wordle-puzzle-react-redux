@@ -3,7 +3,7 @@
  * @date 2022-03-24
  */
 
-import React from "react";
+import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../module/store";
@@ -12,6 +12,7 @@ import { KeyBoardContainer } from "../containers/KeyBoardContainer";
 import { TileList } from "../components/TileList";
 
 import { addKey, deleteKey } from "../module/keyReducer";
+import { increament } from "../module/counterReducer";
 
 interface IControllerProps {
   answer: string;
@@ -27,11 +28,6 @@ export function Controller({ answer, wordList }: IControllerProps) {
   }));
 
   const onKeyDown = (e: KeyboardEvent) => {
-    if (keyState.list.length && keyState.list.length % 5 === 0) {
-      // alert("can not add anymore");
-      return;
-    }
-
     if (e.key == "Enter") {
       return onSubmitControl();
     }
@@ -45,23 +41,51 @@ export function Controller({ answer, wordList }: IControllerProps) {
   };
 
   const addKeyControl = (value: string) => {
+    const word = getCurrentWord();
+    if (word.length == 5) {
+      return;
+    }
+
     dispatch(addKey(value));
   };
 
   const deleteKeyControl = () => {
+    const word = getCurrentWord();
+    if (!word.length) {
+      return;
+    }
+
     dispatch(deleteKey());
   };
 
+  const getCurrentWord = () => {
+    let word: string = "";
+    //extract word at current row
+    const raw = counterState.raw;
+    for (let i = raw * 5; i < 5 * (raw + 1); i++) {
+      const ch = keyState.list[i];
+      if (ch) {
+        word = word.concat(ch.toLowerCase());
+      }
+    }
+
+    return word;
+  };
+
   const onSubmitControl = () => {
-    if (keyState.list.length != 5) {
+    const word = getCurrentWord();
+    if (word.length != 5) {
       alert("Not complete word");
       return;
     }
 
-    if (keyState.list.length != 5) {
+    if (!wordList.includes(word)) {
       alert("Not Valid word in the list");
       return;
     }
+
+    //chage the current raw
+    dispatch(increament());
   };
 
   const getinitArray = () => {
@@ -102,7 +126,7 @@ export function Controller({ answer, wordList }: IControllerProps) {
       <TileList
         inputRawCol={makeInputRawList()}
         submit={false}
-        row={counterState.value}
+        row={counterState.raw}
       />
       <KeyBoardContainer
         inputlist={keyState.list}
