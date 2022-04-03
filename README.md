@@ -6,6 +6,9 @@ Author
 Package Usage
 - react, typescript, react-redux
 
+Origin Game, Reference
+https://www.nytimes.com/games/wordle/index.html
+
 Directoy
 - components : UI components
 - containers : wrapper component who wrapping with UI components and control those.
